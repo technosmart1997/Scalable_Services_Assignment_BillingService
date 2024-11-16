@@ -1,0 +1,24 @@
+config:
+  target: "http://localhost:3000" # Base URL for your services
+  phases:
+    - duration: 60 # Run the test for 60 seconds
+      arrivalRate: 10 # Start with 10 requests per second
+scenarios:
+  - flow:
+      - get:
+          url: "/v1/api/products"
+      - post:
+          url: "/v1/api/products"
+          json:
+            id: "{{ $randomInt(1, 1000) }}"
+            name: "Product {{ $randomInt(1, 1000) }}"
+            price: "{{ $randomInt(100, 500) }}"
+  - flow:
+      - get:
+          url: "/v1/api/orders"
+      - post:
+          url: "/v1/api/orders"
+          json:
+            id: "{{ $randomInt(1, 1000) }}"
+            productId: "{{ $randomInt(1, 1000) }}"
+            quantity: "{{ $randomInt(1, 10) }}"
